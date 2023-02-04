@@ -3,7 +3,7 @@
 	"tasks": [
 		{
 			"type": "cppbuild",
-			"label": "[C/C++, clang++] Build this file",
+			"label": "[C/C++] Build this file",
 			"command": "/usr/bin/clang++",
 			"args": [
 				"-std=c++17",
@@ -26,7 +26,7 @@
 		},
 		{
 			"type": "cppbuild",
-			"label": "[C/C++, clang++] Build this file with optimizations",
+			"label": "[C/C++] Build this file with optimizations",
 			"command": "/usr/bin/clang++",
 			"args": [
 				"-O3",
@@ -50,7 +50,7 @@
 		},
 		{
 			"type": "cppbuild",
-			"label": "[C/C++, clang++] Build this file for debug",
+			"label": "[C/C++] Build this file for debug",
 			"command": "/usr/bin/clang++",
 			"args": [
 				"-g",
@@ -74,9 +74,10 @@
 		},
 		{
 			"type": "cppbuild",
-			"label": "[C/C++, clang++] Build this file with cilk",
-			"command": "xcrun /opt/opencilk/bin/clang++",
+			"label": "[C/C++] Build this file with cilk",
+			"command": "xcrun",
 			"args": [
+				"/opt/opencilk/bin/clang++",
 				"-fopencilk",
 				"-O3",
 				"-std=c++17",

@@ -1,3 +1,5 @@
+#include <cilk/cilk.h>
+
 #include <chrono>
 #include <iomanip>
 #include <iostream>
@@ -24,8 +26,11 @@ void initialize_matrices() {
     }
 }
 
-/* Basic version */
-void multiply_matrices_0(int n) {
+/* 
+    Basic version
+    Time to run: 26,3296,414 µs
+*/
+void multiply_matrices_0() {
     for (int i = 0; i < N; ++i) {
         for (int j = 0; j < N; ++j) {
             for (int k = 0; k < N; ++k) {
@@ -35,8 +40,11 @@ void multiply_matrices_0(int n) {
     }
 }
 
-/* Optimizations: loop order  */
-void multiply_matrices_1(int n) {
+/* 
+    Optimizations: loop order
+    Time to run: 14,209,655 µs
+*/
+void multiply_matrices_1() {
     for (int i = 0; i < N; ++i) {
         for (int k = 0; k < N; ++k) {
             for (int j = 0; j < N; ++j) {
@@ -46,9 +54,12 @@ void multiply_matrices_1(int n) {
     }
 }
 
-/* Optimizations: loop order, parallel loop  */
-void multiply_matrices_2(int n) {
-    for (int i = 0; i < N; ++i) {
+/*
+    Optimizations: loop order, parallel loop
+    Time to run: 2,563,214 µs
+*/
+void multiply_matrices_2() {
+    cilk_for(int i = 0; i < N; ++i) {
         for (int k = 0; k < N; ++k) {
             for (int j = 0; j < N; ++j) {
                 C[i][j] += A[i][k] * B[k][j];
@@ -57,10 +68,27 @@ void multiply_matrices_2(int n) {
     }
 }
 
-int main() {
+int main(int argc, char* argv[]) {
+    int variant = 0;
+    if (argc > 1) {
+        variant = atoi(argv[1]);
+    }
+
     initialize_matrices();
+ 
     auto t_begin = high_resolution_clock::now();
-    multiply_matrices_1(4096);
+    switch (variant) {
+        case 0:
+            multiply_matrices_0();
+            break;
+        case 1:
+            multiply_matrices_1();
+            break;
+        case 2:
+            multiply_matrices_2();
+            break;
+    }
     auto t_end = high_resolution_clock::now();
+ 
     cout << duration_cast<microseconds>(t_end - t_begin).count() << " µs\n";
 }
