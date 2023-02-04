@@ -1,0 +1,101 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "cppbuild",
+			"label": "[C/C++, clang++] Build this file",
+			"command": "/usr/bin/clang++",
+			"args": [
+				"-std=c++17",
+				"-Wall",
+				"${file}",
+				"-o",
+				"${fileDirname}/out/${fileBasenameNoExtension}"
+			],
+			"options": {
+				"cwd": "${fileDirname}"
+			},
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"detail": "compiler: /usr/bin/clang++"
+		},
+		{
+			"type": "cppbuild",
+			"label": "[C/C++, clang++] Build this file with optimizations",
+			"command": "/usr/bin/clang++",
+			"args": [
+				"-O3",
+				"-std=c++17",
+				"-Wall",
+				"${file}",
+				"-o",
+				"${fileDirname}/out/${fileBasenameNoExtension}"
+			],
+			"options": {
+				"cwd": "${fileDirname}"
+			},
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": {
+				"kind": "build",
+				"isDefault": false
+			},
+			"detail": "compiler: /usr/bin/clang++"
+		},
+		{
+			"type": "cppbuild",
+			"label": "[C/C++, clang++] Build this file for debug",
+			"command": "/usr/bin/clang++",
+			"args": [
+				"-g",
+				"-std=c++17",
+				"-Wall",
+				"${file}",
+				"-o",
+				"${fileDirname}/out/${fileBasenameNoExtension}"
+			],
+			"options": {
+				"cwd": "${fileDirname}"
+			},
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": {
+				"kind": "build",
+				"isDefault": false
+			},
+			"detail": "compiler: /usr/bin/clang++"
+		},
+		{
+			"type": "cppbuild",
+			"label": "[C/C++, clang++] Build this file with cilk",
+			"command": "xcrun /opt/opencilk/bin/clang++",
+			"args": [
+				"-fopencilk",
+				"-O3",
+				"-std=c++17",
+				"-Wall",
+				"${file}",
+				"-o",
+				"${fileDirname}/out/${fileBasenameNoExtension}"
+			],
+			"options": {
+				"cwd": "${fileDirname}"
+			},
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": {
+				"kind": "build",
+				"isDefault": false
+			},
+			"detail": "compiler: /opt/opencilk/bin/clang++"
+		},
+	]
+}
