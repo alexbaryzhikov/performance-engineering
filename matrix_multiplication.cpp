@@ -26,7 +26,7 @@ void initialize_matrices() {
     }
 }
 
-/* 
+/*
     Basic version
     Time to run: 26,3296,414 µs
 */
@@ -40,7 +40,7 @@ void multiply_matrices_0() {
     }
 }
 
-/* 
+/*
     Optimizations: loop order
     Time to run: 14,209,655 µs
 */
@@ -75,7 +75,7 @@ int main(int argc, char* argv[]) {
     }
 
     initialize_matrices();
- 
+
     auto t_begin = high_resolution_clock::now();
     switch (variant) {
         case 0:
@@ -89,6 +89,6 @@ int main(int argc, char* argv[]) {
             break;
     }
     auto t_end = high_resolution_clock::now();
- 
+
     cout << duration_cast<microseconds>(t_end - t_begin).count() << " µs\n";
 }
