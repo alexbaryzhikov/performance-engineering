@@ -1,15 +1,8 @@
 #include <cilk/cilk.h>
 
-#include <chrono>
-#include <iomanip>
-#include <iostream>
-#include <sstream>
-
-using std::cout;
-using std::cerr;
-using std::chrono::duration_cast;
-using std::chrono::high_resolution_clock;
-using std::chrono::milliseconds;
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/time.h>
 
 #define N 4096
 
@@ -102,9 +95,9 @@ void multiply_matrices_3() {
 #define X(M, r, c) (M + (r * (n_##M) + c) * (n / 2))
 
 void mm_base(
-    double *C, int n_C,
-    double *A, int n_A,
-    double *B, int n_B,
+    double * restrict C, int n_C,
+    double * restrict A, int n_A,
+    double * restrict B, int n_B,
     int n
 ) {
     for (int i = 0; i < n; ++i) {
@@ -117,12 +110,11 @@ void mm_base(
 }
 
 void mm_dac(
-    double *C, int n_C,
-    double *A, int n_A,
-    double *B, int n_B,
+    double * restrict C, int n_C,
+    double * restrict A, int n_A,
+    double * restrict B, int n_B,
     int n
 ) {
-    assert((n & (-n)) == n);
     if (n <= THRESHOLD) {
         mm_base(C, n_C, A, n_A, B, n_B, n);
     } else {
@@ -151,7 +143,8 @@ int main(int argc, char *argv[]) {
 
     initialize_matrices();
 
-    auto t_begin = high_resolution_clock::now();
+    struct timeval begin, end;
+    gettimeofday(&begin, NULL);
     switch (variant) {
         case 0:
             multiply_matrices_0();
@@ -169,7 +162,10 @@ int main(int argc, char *argv[]) {
             multiply_matrices_4();
             break;
     }
-    auto t_end = high_resolution_clock::now();
-
-    cout << duration_cast<milliseconds>(t_end - t_begin).count() << " µs\n";
+    gettimeofday(&end, NULL);
+    
+    long begin_ms = begin.tv_sec * 1000000L + begin.tv_usec;
+    long end_ms = end.tv_sec * 1000000L + end.tv_usec;
+    
+    printf("%ld µs\n",  (end_ms - begin_ms) / 1000);
 }

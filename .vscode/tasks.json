@@ -98,5 +98,31 @@
 			},
 			"detail": "compiler: /opt/opencilk/bin/clang++"
 		},
+		{
+			"type": "cppbuild",
+			"label": "[C] Build this file with cilk",
+			"command": "xcrun",
+			"args": [
+				"/opt/opencilk/bin/clang",
+				"-fopencilk",
+				"-O3",
+				"-std=c17",
+				"-Wall",
+				"${file}",
+				"-o",
+				"${fileDirname}/out/${fileBasenameNoExtension}"
+			],
+			"options": {
+				"cwd": "${fileDirname}"
+			},
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": {
+				"kind": "build",
+				"isDefault": false
+			},
+			"detail": "compiler: /opt/opencilk/bin/clang"
+		},
 	]
 }
