@@ -4,6 +4,7 @@
 
 #define M 10
 #define N 5
+#define FILL_THRESHOLD 0.1
 
 typedef struct Compressed_sparse_row {
     int n;        // number of rows
@@ -65,6 +66,20 @@ void print_csr(Csr_t *csr) {
     printf("}\n");
 }
 
+double randf() { return rand() / (double)RAND_MAX; }
+
+void fill_sparce_matrix(double matrix[M][N]) {
+    for (int i = 0; i < M; ++i) {
+        for (int j = 0; j < N; ++j) {
+            if (randf() < FILL_THRESHOLD) {
+                matrix[i][j] = randf();
+            } else {
+                matrix[i][j] = 0;
+            }
+        }
+    }
+}
+
 void print_matrix(double matrix[M][N]) {
     for (int i = 0; i < M; ++i) {
         printf("[");
@@ -80,6 +95,21 @@ void print_matrix(double matrix[M][N]) {
     }
 }
 
+void multiply_matrix(Csr_t *csr, double vector[N], double result[M]) {
+    for (int i = 0; i < csr->n; ++i) {
+        result[i] = 0;
+        for (int j = csr->row[i]; j < csr->row[i + 1]; ++j) {
+            result[i] += csr->val[j] * vector[csr->col[j]];
+        }
+    }
+}
+
+void fill_vector(int n, double vector[n]) {
+    for (int i = 0; i < n; ++i) {
+        vector[i] = randf();
+    }
+}
+
 void print_vector(int n, double vector[n]) {
     printf("[");
     for (int i = 0; i < n; ++i) {
@@ -89,28 +119,9 @@ void print_vector(int n, double vector[n]) {
     printf("]\n");
 }
 
-void matrix_multiply(Csr_t *csr, double vector[N], double result[M]) {
-    for (int i = 0; i < csr->n; ++i) {
-        result[i] = 0;
-        for (int j = csr->row[i]; j < csr->row[i + 1]; ++j) {
-            result[i] += csr->val[j] * vector[csr->col[j]];
-        }
-    }
-}
-
-double randf() { return rand() / (double)RAND_MAX; }
-
 int main() {
     double matrix[M][N];
-    for (int i = 0; i < M; ++i) {
-        for (int j = 0; j < N; ++j) {
-            if (randf() < 0.1) {
-                matrix[i][j] = randf();
-            } else {
-                matrix[i][j] = 0;
-            }
-        }
-    }
+    fill_sparce_matrix(matrix);
 
     print_matrix(matrix);
     printf("\n");
@@ -122,16 +133,14 @@ int main() {
     printf("\n");
 
     double vector[N];
-    for (int i = 0; i < N; ++i) {
-        vector[i] = randf();
-    }
+    fill_vector(N, vector);
 
     printf("vector=");
     print_vector(N, vector);
     printf("\n");
 
     double mult_result[M];
-    matrix_multiply(&csr, vector, mult_result);
+    multiply_matrix(&csr, vector, mult_result);
 
     printf("mult_result=");
     print_vector(M, mult_result);
