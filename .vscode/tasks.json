@@ -3,6 +3,28 @@
 	"tasks": [
 		{
 			"type": "cppbuild",
+			"label": "[C] Build this file",
+			"command": "/usr/bin/clang",
+			"args": [
+				"-Wall",
+				"${file}",
+				"-o",
+				"${fileDirname}/out/${fileBasenameNoExtension}"
+			],
+			"options": {
+				"cwd": "${fileDirname}"
+			},
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"detail": "compiler: /usr/bin/clang"
+		},
+		{
+			"type": "cppbuild",
 			"label": "[C] Build this file with optimizations",
 			"command": "/usr/bin/clang",
 			"args": [
@@ -20,7 +42,7 @@
 			],
 			"group": {
 				"kind": "build",
-				"isDefault": true
+				"isDefault": false
 			},
 			"detail": "compiler: /usr/bin/clang"
 		},
