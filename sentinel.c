@@ -15,6 +15,7 @@ bool overflow(int *a, size_t n) {
 
 bool overflow_opt(int *a, size_t n) {
     a[n] = INT_MAX;
+    a[n + 1] = 1;
     int sum = a[0];
     size_t i = 0;
     while (sum >= a[i]) {
@@ -25,7 +26,7 @@ bool overflow_opt(int *a, size_t n) {
 
 int main(int argc, char const *argv[]) {
     size_t n = 2;
-    int *a = (int *)malloc(sizeof(int) * (n + 1));
+    int *a = (int *)malloc(sizeof(int) * (n + 2));
     srand(time(0));
     printf("[");
     for (size_t i = 0; i < n; ++i) {
