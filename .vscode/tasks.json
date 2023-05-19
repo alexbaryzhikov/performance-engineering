@@ -76,7 +76,6 @@
 			"args": [
 				"/opt/opencilk/bin/clang",
 				"-fopencilk",
-				"-O3",
 				"-Wall",
 				"${file}",
 				"-o",
@@ -169,7 +168,6 @@
 			"args": [
 				"/opt/opencilk/bin/clang++",
 				"-fopencilk",
-				"-O3",
 				"-Wall",
 				"${file}",
 				"-o",
