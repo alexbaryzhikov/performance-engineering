@@ -76,6 +76,7 @@
 			"args": [
 				"/opt/opencilk/bin/clang",
 				"-fopencilk",
+				"-O1",
 				"-Wall",
 				"${file}",
 				"-o",

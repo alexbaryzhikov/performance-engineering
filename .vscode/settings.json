@@ -4,7 +4,8 @@
         "chrono": "cpp",
         "sstream": "cpp",
         "random": "cpp",
-        "stdio.h": "c"
+        "stdio.h": "c",
+        "cilk.h": "c"
     },
     "C_Cpp.errorSquiggles": "disabled",
     "cmake.configureOnOpen": false
