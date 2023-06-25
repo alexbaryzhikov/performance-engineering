@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/time.h>
+#include <math.h>
 
 static struct timeval begin_time, end_time;
 
@@ -14,7 +15,7 @@ void timer_stop() {
     printf("%ld µs\n", (end_ms - begin_ms) / 1000);
 }
 
-void vector_calc(int a[], int b[], size_t n) {
+void vector_calc_bisection(int a[], int b[], size_t n) {
 #pragma cilk grainsize 100
     cilk_for(size_t i = 0; i < n; ++i) {
         int acc = 0;
@@ -23,6 +24,24 @@ void vector_calc(int a[], int b[], size_t n) {
         }
         a[i] = acc;
     }
+}
+
+void vector_calc(int a[], int b[], size_t n, size_t begin, size_t end) {
+    cilk_for(size_t i = begin; i < end; ++i) {
+        int acc = 0;
+        for (size_t j = 0; j < n; ++j) {
+            acc = (acc + b[j]) % a[i];
+        }
+        a[i] = acc;
+    }
+}
+
+void vector_calc_sequence(int a[], int b[], size_t n) {
+    int step = ceil(sqrt(n));
+    for (size_t i = 0; i < n; i += step) {
+        cilk_spawn vector_calc(a, b, n, i, fmin(n, i + step));
+    }
+    cilk_sync;
 }
 
 void fill(int v[], size_t n) {
@@ -47,17 +66,40 @@ void println(int v[], size_t n, size_t m) {
 
 #define N 100000
 
-int main(int argc, char const *argv[]) {
+void test_bisection() {
+    srand(123);
     int a[N];
     fill(a, N);
     int b[N];
     fill(b, N);
 
+    printf("Test bisection... ");
+
     timer_start();
-    vector_calc(a, b, N);
+    vector_calc_bisection(a, b, N);
     timer_stop();
 
     println(a, N, 10);
+}
 
+void test_sequence() {
+    srand(123);
+    int a[N];
+    fill(a, N);
+    int b[N];
+    fill(b, N);
+
+    printf("Test sequence... ");
+
+    timer_start();
+    vector_calc_sequence(a, b, N);
+    timer_stop();
+
+    println(a, N, 10);
+}
+
+int main(int argc, char const *argv[]) {
+    test_bisection();
+    test_sequence();
     return 0;
 }
