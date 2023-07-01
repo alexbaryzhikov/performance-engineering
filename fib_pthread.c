@@ -6,9 +6,9 @@
 
 static struct timeval begin_time, end_time;
 
-void set_begin_time() { gettimeofday(&begin_time, NULL); }
+void timer_start() { gettimeofday(&begin_time, NULL); }
 
-void set_end_time() {
+void timer_stop() {
     gettimeofday(&end_time, NULL);
     long begin_ms = begin_time.tv_sec * 1000000L + begin_time.tv_usec;
     long end_ms = end_time.tv_sec * 1000000L + end_time.tv_usec;
@@ -40,7 +40,7 @@ int main(int argc, char const* argv[]) {
     if (argc < 2) return 1;
     int64_t n = strtoul(argv[1], NULL, 0);
 
-    set_begin_time();
+    timer_start();
     ta.input = n - 1;
     status = pthread_create(&thread, NULL, thread_func, &ta);
     if (status != 0) return 1;
@@ -48,7 +48,7 @@ int main(int argc, char const* argv[]) {
     status = pthread_join(thread, NULL);
     if (status != 0) return 1;
     result += ta.output;
-    set_end_time();
+    timer_stop();
 
     printf("Fibonacci of %" PRId64 " is %" PRId64 ".\n", n, result);
     return 0;

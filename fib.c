@@ -5,9 +5,9 @@
 
 static struct timeval begin_time, end_time;
 
-void set_begin_time() { gettimeofday(&begin_time, NULL); }
+void timer_start() { gettimeofday(&begin_time, NULL); }
 
-void set_end_time() {
+void timer_stop() {
     gettimeofday(&end_time, NULL);
     long begin_ms = begin_time.tv_sec * 1000000L + begin_time.tv_usec;
     long end_ms = end_time.tv_sec * 1000000L + end_time.tv_usec;
@@ -22,9 +22,11 @@ int64_t fib(int64_t n) {
 int main(int argc, char const *argv[]) {
     if (argc < 2) return 1;
     int64_t n = atoi(argv[1]);
-    set_begin_time();
+
+    timer_start();
     int64_t result = fib(n);
-    set_end_time();
+    timer_stop();
+    
     printf("Fibonacci of %" PRId64 " is %" PRId64 ".\n", n, result);
     return 0;
 }
