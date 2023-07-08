@@ -1,3 +1,4 @@
+import math
 import numpy as np
 from matplotlib import pyplot as plt
 
@@ -203,6 +204,11 @@ data = np.array([
     [3960001, 648111],
     [3980001, 656621],
 ])
+
+data_nlogn = np.array([[n, n * math.log2(n) * 0.0075] for n in data.T[0]])
+
 x, y = data.T
 plt.scatter(x, y, marker="+", s=25, linewidths=1)
+x, y = data_nlogn.T
+plt.scatter(x, y, marker=".", s=5)
 plt.show()
