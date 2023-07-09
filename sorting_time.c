@@ -22,9 +22,8 @@ void set_max_stack_limit() {
 
 void fill(double* a, size_t n, unsigned seed) {
     srand(seed);
-    while (n) {
+    for (; n; --n) {
         *a++ = (double)rand();
-        --n;
     }
 }
 
@@ -61,12 +60,11 @@ int cmp_double(const void* a, const void* b) {
 }
 
 void assert_equal(double* a, double* b, size_t n) {
-    while (n) {
+    for (; n; --n) {
         if (*a++ != *b++) {
             fprintf(stderr, "Assertion failed: arrays are not equal.\n");
             exit(1);
         }
-        --n;
     }
 }
 
